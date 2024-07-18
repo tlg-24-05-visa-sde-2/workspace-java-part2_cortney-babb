@@ -25,4 +25,8 @@ public class HourlyEmployeeTest {
     public void testPayTaxes() {
         assertEquals(640.0, hemp.payTaxes(), .001); // should be 640
     }
+
+    @Test
+    public void name() {
+    }
 }

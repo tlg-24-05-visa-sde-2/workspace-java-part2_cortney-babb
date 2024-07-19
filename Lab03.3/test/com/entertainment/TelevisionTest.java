@@ -102,5 +102,9 @@ public class TelevisionTest {
         assertNotEquals(tv, tv2);
     }
 
+    @Test
+    public void thisTelevisionBrand_shouldEqual_OtherTelevisionBrand_usingCompareTo() {
+        assertEquals(tv.getBrand(), tv2.getBrand());
+    }
 
 }

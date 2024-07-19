@@ -23,7 +23,7 @@ public class TelevisionChannelComparatorTest {
     }
 
     @Test
-    public void comparator_ShouldReturnZero_currentChannelsEqual() {
+    public void comparator_ShouldReturnZero_sameChannelsEqual() {
         int result = comparator.compare(tv, tv2);
         assertEquals(0, result);
     }
@@ -45,4 +45,6 @@ public class TelevisionChannelComparatorTest {
             assertEquals(expectedMsg, e.getMessage());
         }
     }
+
+
 }

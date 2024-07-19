@@ -3,6 +3,8 @@ package com.entertainment;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.entertainment.Television.MAX_CHANNEL;
+import static com.entertainment.Television.MIN_CHANNEL;
 import static org.junit.Assert.*;
 
 public class TelevisionTest {
@@ -12,7 +14,8 @@ public class TelevisionTest {
 
     @Before
     public void setUp() {
-        tv = new Television();
+        tv = new Television("Sony", 50, DisplayType.PLASMA);
+        tv2 = new Television("Sony", 50, DisplayType.PLASMA);
     }
 
     @Test
@@ -39,28 +42,65 @@ public class TelevisionTest {
         assertEquals(999, tv.getCurrentChannel());
     }
 
-    // TODO needs try catch exception for the invalids
-//    @Test
-//    public void changeChannel_shouldNotStoreValue_whenInvalid_lowerBound() throws InvalidChannelException {
-//        tv.changeChannel(1);
-//
-//    }
-//
-//    @Test
-//    public void changeChannel_shouldNotStoreValue_whenInvalid_upperBound() throws Exception {
-//        tv.changeChannel(1000);
-//
-//    }
+    @Test
+    public void changeChannel_shouldThrowInvalidChannelException_whenInvalid_lowerBound() {
+        try {
+            tv.changeChannel(0);
+            fail("Should have thrown InvalidChannelException");
+        } catch (InvalidChannelException e) {
+            String expectedMsg = "Invalid channel: 0. Allowed range: [1,999].";
+            assertEquals(expectedMsg, e.getMessage());
+        }
+    }
 
-//    @Test
-//    public void testSetVolume_shouldNotStoreValue_whenInvalid_lowerBound() {
-//        tv.setVolume(-1);
-//
-//    }
-//
-//    @Test
-//    public void testSetVolume_shouldNotStoreValue_whenInvalid_upperBound() {
-//        tv.setVolume(101);
-//
-//    }
+    @Test
+    public void changeChannel_shouldThrowInvalidChannelException_whenInvalid_upperBound() {
+        try {
+            tv.changeChannel(1000);
+            fail("Should have thrown InvalidChannelException");
+        } catch (InvalidChannelException e) {
+            String expectedMsg = "Invalid channel: 1000. Allowed range: [1,999].";
+            assertEquals(expectedMsg, e.getMessage());
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setVolume_shouldThrowIllegalArgumentException_whenInvalid_lowerBound() {
+        tv.setVolume(-1); //should throw an exception
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setVolume_shouldThrowIllegalArgumentException_whenInvalid_upperBound() {
+        tv.setVolume(101); //should throw an exception
+    }
+
+    @Test
+    public void Hashcode_shouldBeEqual() {
+        assertEquals(tv.hashCode(), tv2.hashCode());
+    }
+
+    @Test
+    public void equals_shouldBeTrue() {
+        assertEquals(tv, tv2);
+    }
+
+    @Test
+    public void equals_shouldBeFalseWhen_differentBrand_sameVolume_sameDisplay() {
+        tv2.setBrand("LG");
+        assertNotEquals(tv, tv2);
+    }
+
+    @Test
+    public void equals_shouldBeFalseWhen_sameBrand_differentVolume_sameDisplay() {
+        tv2.setVolume(99);
+        assertNotEquals(tv, tv2);
+    }
+
+    @Test
+    public void equals_shouldBeFalseWhen_sameBrand_sameVolume_differentDisplay() {
+        tv2.setDisplay(DisplayType.LED);
+        assertNotEquals(tv, tv2);
+    }
+
+
 }

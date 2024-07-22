@@ -28,16 +28,37 @@ public class Catalog {
      * A no-matches result should be an empty collection (not null).
      */
     public static Collection<Television> findByBrand(String brand) {
-        return null;
+        Collection<Television> result = new ArrayList<>();
+        // for each over catalog and look for matching brands
+        for (Television tv : catalog) {
+            if (tv.getBrand().equals(brand)) {
+                result.add(tv);
+            }
+        }
+        return result;
     }
 
     /**
      * Searches catalog by one or more brands, and returns a map with an entry for each brand supplied,
      * with a corresponding collection of matching Televisions for that brand.
      * A no-brands-passed result should be an empty map (not null).
+     *
+     * if client says:
+     * Catalog.findByBrands("Sony")    first will be Sony, rest is empty array
+     * Catalog.findByBrands("Sony", "RCA")  first Sony, rest will be array of length 1
      */
-    public static Map<String,Collection<Television>> findByBrands(String... brands) {
-        return null;
+    public static Map<String,Collection<Television>> findByBrands(String first, String... rest) {
+        Map<String, Collection<Television>> map = new HashMap<>();
+
+        /* TODO :
+         * 1. call findByBrand() method with your 'first', this returns Collection<Television>
+         *      put() the value of 'first' and this collection in the map
+         * 2. for-each String in 'rest' call the findByBrand() method, get Collection back
+         *      put() that String and this Collection in the map
+         */
+
+
+        return map;
     }
 
     /**

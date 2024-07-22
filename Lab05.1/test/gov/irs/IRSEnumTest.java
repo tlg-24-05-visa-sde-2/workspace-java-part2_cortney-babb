@@ -17,6 +17,7 @@ public class IRSEnumTest {
     @Test
     public void normalClientUsage() {
         IRSEnum irs = IRSEnum.getInstance();  // client can also say "IRSEnum.INSTANCE"
+        // IRSEnum irs = IRSEnum.INSTANCE;
         irs.register(new Corporation("JavaTunes"));
         irs.collectTaxes();
     }
@@ -26,7 +27,11 @@ public class IRSEnumTest {
      */
     @Test
     public void getInstance_shouldReturnSameInstance_everyTime() {
+        IRSEnum irs = IRSEnum.getInstance();
+        IRSEnum irs2 = IRSEnum.getInstance();
 
+        assertTrue(irs == irs2);
+        assertSame(irs, irs2);
     }
 
     /*
@@ -36,6 +41,6 @@ public class IRSEnumTest {
      */
     @Test
     public void classload_triggersInstanceCreation() {
-        // TODO: call IRSEnum.touch() and note the output
+        IRSEnum.touch();
     }
 }

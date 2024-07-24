@@ -38,7 +38,7 @@ import java.util.*;
  *   17       17    Dom        1    DEBIT_CARD
  */
 
-class Board {
+public class Board {
     // fields
     private final Map<Integer,String> studentIdMap = loadStudentIdMap();
     private final Map<Integer,DuckRacer> racerMap  = new TreeMap<>();
@@ -76,15 +76,25 @@ class Board {
     // TODO - render the data as we see it in the "real" application
     // see Session 5 in Java Part 1 manual, formatted output (justify)
     public void show() {
-        Collection<DuckRacer> racers = racerMap.values();
+        if (racerMap.isEmpty()) {
+            System.out.println("\nThere are no results to show.\n");
+        } else {
+            Collection<DuckRacer> racers = racerMap.values();
 
-        // print title and column heading
+            // print title and column heading
+            String header = """
+                    \t\tDuck Race Results
+                    \t\t=================
+                    
+                    id\t\tname\t\twins\trewards
+                    ==\t\t====\t\t====\t=======
+                    """;
 
-        for (DuckRacer racer : racers) {
-            System.out.printf("%s   %s   %s   %s\n",
-                    racer.getId(), racer.getName(), racer.getWins(), racer.getRewards());
-
-//            System.out.println(racer);
+            for (DuckRacer racer : racers) {
+                System.out.printf("%s%s\t\t%s\t\t%s\t\t%s",
+                        header, racer.getId(), racer.getName(), racer.getWins(), racer.getRewards());
+                System.out.println();
+            }
         }
     }
 

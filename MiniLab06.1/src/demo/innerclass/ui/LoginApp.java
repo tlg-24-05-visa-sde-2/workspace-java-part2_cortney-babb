@@ -1,11 +1,3 @@
-/*
- * This code is sample code, provided as-is, and we make no
- * warranties as to its correctness or suitability for
- * any purpose.
- *
- * We hope that it's useful to you.  Enjoy.
- * Copyright LearningPatterns Inc.
- */
 package demo.innerclass.ui;
 
 import java.awt.Container;
@@ -22,7 +14,7 @@ public class LoginApp extends JFrame {
     private final JLabel nameLabel = new JLabel("Username: ");
     private final JLabel passwordLabel = new JLabel("Password: ");
     private final JTextField nameField = new JTextField(12);
-    private final JTextField passwordField = new JPasswordField(12);
+    private final JPasswordField passwordField = new JPasswordField(12);
     private final JButton loginButton = new JButton("OK");
     private final JLabel messageLabel = new JLabel();
 
@@ -31,8 +23,8 @@ public class LoginApp extends JFrame {
         buildUI();
         setFrameOptions();
 
-        // NOTE: pass references to my privates that the listener needs to do its job
-        loginButton.addActionListener(new LoginAppListener(nameField, passwordField, messageLabel));
+        // Instantiate the inner class here
+        loginButton.addActionListener(new InnerListener());
     }
 
     private void buildUI() {
@@ -52,8 +44,30 @@ public class LoginApp extends JFrame {
         pack();
     }
 
-
     public static void main(String[] args) {
         new LoginApp().setVisible(true);
+    }
+
+    // NAMED, MEMBER-LEVEL INNER CLASS
+    private class InnerListener implements ActionListener {
+
+        /**
+         * The heart of an ActionListener - this gets called when the event is fired.
+         * Need to authenticate the user and display appropriate message on the UI.
+         */
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            // Retrieve the text from the password field using the getPassword() method
+            String username = nameField.getText();
+            String password = new String(passwordField.getPassword());
+
+            if ("derek".equals(username) && "smalls".equals(password)) {
+                messageLabel.setText("Login successful!");
+            } else {
+                messageLabel.setText("Sorry, try again");
+            }
+            nameField.setText("");
+            passwordField.setText("");
+        }
     }
 }

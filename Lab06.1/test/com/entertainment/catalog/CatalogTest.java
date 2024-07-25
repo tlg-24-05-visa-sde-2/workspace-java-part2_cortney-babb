@@ -9,10 +9,9 @@
 package com.entertainment.catalog;
 
 import static org.junit.Assert.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+
+import java.util.*;
+
 import org.junit.Test;
 import com.entertainment.Television;
 
@@ -67,6 +66,20 @@ public class CatalogTest {
 
         Set<Television> inventorySet = new HashSet<>(inventory);
         assertEquals(23, inventorySet.size());
+    }
+
+    @Test
+    public void testLoudest_CollectionsDotMax() {
+        Collection<Television> inventory = Catalog.getInventory();
+
+        Television loudest = Collections.max(inventory, new Comparator<>() {
+
+            @Override
+            public int compare(Television tv1, Television tv2) {
+                return Integer.compare(tv1.getVolume(), tv2.getVolume());
+            }
+        });
+        System.out.println(loudest);
     }
 
     /**

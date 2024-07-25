@@ -8,13 +8,31 @@
  */
 package com.javatunes.product;
 
+import com.javatunes.billing.Location;
+import com.javatunes.billing.TaxCalculator;
+import com.javatunes.billing.TaxCalculatorFactory;
+
 import java.util.Collection;
 
 public class Order {
-    private String id;
+    private final String id;
+    private final Location location;
+    private double subTotal;
 
-    public Order(String id) {
+
+    public Order(String id, Location location) {
+        this.location = location;
         this.id = id;
+    }
+
+    // instead of doing calculation here, delegate to one of the TaxCalculator strategies
+    // we omit saying "new" here
+    //  Ex.        TaxCalculator calc = new USATax();
+    // instead, we fetch it from factory, "pull" model
+    public double getTax() {
+        TaxCalculator calc = TaxCalculatorFactory.createTaxCalculator(getLocation());
+
+        return calc.taxAmount(getSubTotal());
     }
 
     /**
@@ -29,10 +47,22 @@ public class Order {
         for (Product product : cartItems) {
             System.out.println(product.getCode());
         }
-        System.out.println("Order Total: " + cart.total());
+
+        double subtotal = cart.total();
+        System.out.println("Order Total: " + subtotal);
+        this.subTotal = subtotal;
     }
 
     public String getId() {
         return id;
+    }
+
+    // Getters
+    public Location getLocation() {
+        return location;
+    }
+
+    public double getSubTotal() {
+        return subTotal;
     }
 }

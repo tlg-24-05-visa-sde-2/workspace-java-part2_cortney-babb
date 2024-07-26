@@ -24,27 +24,16 @@ public class Department {
         setLocation(location);
     }
 
-    public void listEmployees() {
-        for (Employee emp : employees) {
-            System.out.println(emp);
-        }
+    public void listEmployees() { // emp -> System.out.println(emp)
+        employees.forEach(System.out::println);
     }
 
-    public void workEmployees() {
-        for (Employee emp : employees) {
-            emp.work();
-        }
+    public void workEmployees() { // emp -> emp.work()
+        employees.forEach(Employee::work);
     }
 
-    /**
-     * DONE: implement payEmployees() method by calling pay() on each Employee
-     * it will look similar to the workEmployees() method above
-     */
-    public void payEmployees() {
-        // DONE
-        for (Employee emp : employees) {
-            emp.pay();
-        }
+    public void payEmployees() { // emp -> emp.pay()
+        employees.forEach(Employee::pay);
     }
 
     // helper method to add an Employee to the collection

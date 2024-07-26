@@ -1,6 +1,6 @@
 package com.duckrace;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -38,10 +38,39 @@ import java.util.*;
  *   17       17    Dom        1    DEBIT_CARD
  */
 
-public class Board {
+public class Board implements Serializable {
+    private static final String DATA_FILE_PATH = "data/board.dat";
+    private static final String CONF_FILE_PATH = "conf/student-ids.csv";
+    /*
+     * If data/board.dat exists, the application has been run before at least once.
+     * Therefore, recreate the board object from that binary file
+     *
+     * Else, if file is not there, this is the first time app has been run.
+     * Therefore, create and return new board
+     */
+    public static Board getInstance() {
+        Board board = null;
+
+        if (Files.exists(Path.of(DATA_FILE_PATH))) {
+            // reads binary file if it exists
+            try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(DATA_FILE_PATH))) {
+                board = (Board) in.readObject(); // downcasts object to board
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            board = new Board(); // else create new board
+        }
+        return board;
+    }
+
     // fields
     private final Map<Integer,String> studentIdMap = loadStudentIdMap();
     private final Map<Integer,DuckRacer> racerMap  = new TreeMap<>();
+
+    // private constructor, prevents instantiation from outside - only getInstance
+    private Board() {
+    }
 
     // action methods
 
@@ -66,11 +95,8 @@ public class Board {
             racerMap.put(id, racer);
         }
         racer.win(reward);
-    }
 
-    // FOR TESTING ONLY
-    void dumpStudentIdMap() {
-        System.out.println(studentIdMap);
+        save();
     }
 
     // TODO - render the data as we see it in the "real" application
@@ -81,20 +107,29 @@ public class Board {
         } else {
             Collection<DuckRacer> racers = racerMap.values();
 
-            // print title and column heading
-            String header = """
-                    \t\tDuck Race Results
-                    \t\t=================
-                    
-                    id\t\tname\t\twins\trewards
-                    ==\t\t====\t\t====\t=======
-                    """;
+            // print title and column heading once
+            System.out.println("""
+                \t\tDuck Race Results
+                \t\t=================
+                
+                id\t\tname\t\twins\trewards
+                ==\t\t====\t\t====\t=======
+                """);
 
+            // print each racer's information
             for (DuckRacer racer : racers) {
-                System.out.printf("%s%s\t\t%s\t\t%s\t\t%s",
-                        header, racer.getId(), racer.getName(), racer.getWins(), racer.getRewards());
-                System.out.println();
+                System.out.printf("%d\t\t%s\t\t%d\t\t%s\n",
+                        racer.getId(), racer.getName(), racer.getWins(), racer.getRewards());
             }
+        }
+    }
+
+
+    private void save() {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(DATA_FILE_PATH))) {
+            out.writeObject(this); // write "me" to binary file, I am a board object
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -104,7 +139,7 @@ public class Board {
         // read all lines from CSV file, process each one into an integer and a string
         // checked exception
         try {
-            List<String> lines = Files.readAllLines(Path.of("conf/student-ids.csv"));
+            List<String> lines = Files.readAllLines(Path.of(CONF_FILE_PATH));
 
             // for each line, split string into "tokens" => 1 Bullen
             for (String line : lines) {

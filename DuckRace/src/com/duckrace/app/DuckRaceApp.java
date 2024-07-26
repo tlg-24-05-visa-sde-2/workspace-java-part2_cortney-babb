@@ -3,6 +3,7 @@ package com.duckrace.app;
 import com.duckrace.Board;
 import com.duckrace.Reward;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -14,7 +15,8 @@ import java.util.Scanner;
 
 public class DuckRaceApp {
     private final Scanner scanner = new Scanner(System.in);
-    private final Board board = new Board();
+    private final Board board = Board.getInstance();
+
 
     public void execute() {
         welcome();
@@ -53,6 +55,7 @@ public class DuckRaceApp {
         boolean validInput = false;
 
         while (!validInput) {
+            System.out.println();
             System.out.print("Please enter id of the winner [1-11]: ");
             String input = scanner.nextLine().trim(); // BLOCKs for [Enter], trims off leading whitespace
             System.out.println();
@@ -75,10 +78,10 @@ public class DuckRaceApp {
 
     private void welcome() {
         System.out.println("""
-                \n
-                    -----------------
-                    Welcome  to  the
-                    D U C K  R A C E!
-                    -----------------""");
+                    \n
+                    \t    -----------------
+                    \t     Welcome  to  the
+                    \t     D U C K  R A C E!
+                    \t    -----------------""");
     }
 }

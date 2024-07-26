@@ -17,12 +17,7 @@ class JewelSortTest {
         dump(jewels);
         System.out.println();
 
-        jewels.sort(new Comparator<String>() {
-            @Override
-            public int compare(String jewel1, String jewel2) {
-                return Integer.compare(jewel1.length(), jewel2.length());
-            }
-        });
+        jewels.sort( (j1, j2) -> Integer.compare(j1.length(), j2.length()) );
         dump(jewels);
     }
 

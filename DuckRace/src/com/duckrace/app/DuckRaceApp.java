@@ -80,8 +80,10 @@ public class DuckRaceApp {
         System.out.println("""
                     \n
                     \t    -----------------
-                    \t     Welcome  to  the
-                    \t     D U C K  R A C E!
-                    \t    -----------------""");
+                    \t    Welcome  to  the
+                    \t    D U C K  R A C E!
+                    \t    -----------------
+                    
+                    """);
     }
 }

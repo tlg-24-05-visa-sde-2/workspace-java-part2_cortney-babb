@@ -79,14 +79,18 @@ public class InMemoryCatalog implements Catalog {
      */
     @Override
     public Collection<MusicItem> findByCategory(MusicCategory category) { // category pop
-        Collection<MusicItem> result = new ArrayList<>();
+        // using streams / lambda
+        return catalogData.stream()
+                .filter(item -> item.getMusicCategory() == category)
+                .toList();
+//        Collection<MusicItem> result = new ArrayList<>();
 
-        for (MusicItem item : catalogData) {
-            if (item.getMusicCategory().equals(category)) {
-                result.add(item);
-            }
-         }
-        return result;
+//        for (MusicItem item : catalogData) {
+//            if (item.getMusicCategory().equals(category)) {
+//                result.add(item);
+//            }
+//         }
+//        return result;
     }
 
     /**
